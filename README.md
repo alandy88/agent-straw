@@ -1,11 +1,11 @@
 # agent-straw
 
-A Claude Code plugin that provides an orchestrator agent with automatic intent classification, model routing, and autonomous execution loops.
+A Claude Code plugin with a six-agent hierarchy for automatic intent classification, model routing, and autonomous plan execution.
 
 ## Install
 
 ```bash
-claude plugin add github:peteryu/agent-straw
+claude plugin add github:alandy88/agent-straw
 ```
 
 ## Usage
@@ -32,9 +32,9 @@ Inside a Claude session:
 /straw-loop --plan .straw/plans/feature.md --max-iterations 15
 ```
 
-Uses the Stop hook to keep the agent working until the plan is complete.
+The Stop hook keeps the agent working until all plan tasks are complete.
 
-### External Ralph Loop (fire and forget)
+### External Loop (fire and forget)
 
 From your terminal:
 
@@ -44,25 +44,38 @@ From your terminal:
 
 Each iteration gets a fresh context window. Progress is tracked in `.straw/progress/`.
 
-## Agent Hierarchy
+## Agents
 
 | Agent | Model | Role |
 |---|---|---|
 | **straw** | opus | Orchestrator — classifies intent, routes to sub-agents |
-| **lukcid** | opus | Planner — interviews, explores codebase, writes plans |
-| **maebari** | opus | Plan reviewer — rich with resources, finds gaps, ambiguity, scope creep |
-| **ceui** | sonnet | Grinder — executes plans by delegating to Zansin |
+| **lukcid** | opus | Planner — explores codebase, writes plans to `.straw/plans/` |
+| **maebari** | opus | Reviewer — validates plans for gaps, ambiguity, scope creep |
+| **ceui** | sonnet | Grinder — executes plans task-by-task, delegates to zansin |
 | **zansin** | sonnet* | Invoker — writes code, runs tests, commits (*model set by caller) |
-| **kong** | opus | Thinker & guide — read-only advisor for architecture/debugging |
+| **kong** | opus | Thinker & guide — read-only advisor for architecture and debugging |
+
+### Task Flows
+
+**Simple task** (single-file change):
+`straw → zansin`
+
+**Complex feature** (multi-step plan):
+`straw → lukcid → maebari → (APPROVE) → ceui → zansin`
+
+**Research / advice**:
+`straw → kong`
+
+Only zansin writes source code. All other agents are read-only on source or delegate downward.
 
 ## Hooks
 
-- **straw-wisdom.sh** (PostToolUse) — Captures sub-agent learnings to session-scoped temp file
-- **straw-continuation.sh** (Stop) — Prevents exit when plan has incomplete tasks
+- **straw-wisdom.sh** (PostToolUse) — captures sub-agent learnings to a session-scoped temp file
+- **straw-continuation.sh** (Stop) — blocks exit when an active plan has incomplete tasks
 
-## Project Files
+## Runtime Files
 
-Straw creates a `.straw/` directory in your project:
+Straw creates a `.straw/` directory in your project at runtime:
 
 ```
 .straw/
