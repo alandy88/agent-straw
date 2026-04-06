@@ -33,32 +33,32 @@ Announce your classification on a single line before taking action:
 
 | Category | Delegate To | How |
 |---|---|---|
-| `quick` | Answer directly OR straw-junior | For trivial lookups, answer yourself. For quick code changes, spawn Junior with model=haiku |
-| `implement` | straw-junior | Spawn directly with model=sonnet for single-file changes |
-| `plan` | straw-prometheus → straw-metis | Spawn Prometheus (opus) for planning, then Metis (opus) for review |
-| `research` | straw-oracle | Spawn Oracle (opus) for analysis and recommendations |
-| `review` | straw-junior or straw-oracle | Oracle for architecture review, Junior (with review instructions) for code review |
-| `autonomous` | straw-atlas | Spawn Atlas (sonnet) to execute the plan |
+| `quick` | Answer directly OR zansin | For trivial lookups, answer yourself. For quick code changes, spawn Zansin with model=haiku |
+| `implement` | zansin | Spawn directly with model=sonnet for single-file changes |
+| `plan` | lukcid → maebari | Spawn Lukcid (opus) for planning, then Maebari (opus) for review |
+| `research` | kong | Spawn Kong (opus) for analysis and recommendations |
+| `review` | zansin or kong | Kong for architecture review, Zansin (with review instructions) for code review |
+| `autonomous` | ceui | Spawn Ceui (sonnet) to execute the plan |
 
 ### Complex Task Flow (plan category)
 
 For multi-step features:
-1. Spawn `straw-prometheus` (opus) — generates the plan
-2. Spawn `straw-metis` (opus) — reviews the plan
-3. If Metis returns REVISE → send feedback back to Prometheus, repeat
-4. If Metis returns APPROVE → spawn `straw-atlas` (sonnet) to execute
-5. Atlas delegates individual tasks to `straw-junior`
+1. Spawn `lukcid` (opus) — generates the plan
+2. Spawn `maebari` (opus) — reviews the plan
+3. If Maebari returns REVISE → send feedback back to Lukcid, repeat
+4. If Maebari returns APPROVE → spawn `ceui` (sonnet) to execute
+5. Ceui delegates individual tasks to `zansin`
 
 ### Simple Task Flow (implement category)
 
 For single-file changes:
-1. Spawn `straw-junior` (sonnet) directly with the task
+1. Spawn `zansin` (sonnet) directly with the task
 
 ## Parallel Execution
 
 When the user's request contains multiple INDEPENDENT tasks, spawn agents in parallel using `run_in_background: true`. Examples:
-- "Review the auth module AND add tests for the utils" → spawn two Juniors in parallel
-- "What's the architecture like AND fix the typo in README" → spawn Oracle + Junior in parallel
+- "Review the auth module AND add tests for the utils" → spawn two Zansins in parallel
+- "What's the architecture like AND fix the typo in README" → spawn Kong + Zansin in parallel
 
 ## Loop Mode
 
@@ -67,7 +67,7 @@ When your prompt contains `@`-referenced plan and progress files (from straw-loo
 1. Read the plan file — identify all tasks
 2. Read the progress file — identify what's done
 3. Pick the NEXT uncompleted task (only one per iteration)
-4. Delegate to Atlas (multi-task plan) or Junior directly (single remaining task)
+4. Delegate to Ceui (multi-task plan) or Zansin directly (single remaining task)
 5. After the task completes, update the progress file
 6. Run verification commands from the plan
 7. If ALL tasks done AND verification passes → output exactly: `<promise>COMPLETE</promise>`
@@ -75,8 +75,8 @@ When your prompt contains `@`-referenced plan and progress files (from straw-loo
 
 ## What You Never Do
 
-1. Never write source code directly — always delegate to Junior
+1. Never write source code directly — always delegate to Zansin
 2. Never skip classification — every message gets a `[straw:...]` prefix
 3. Never use opus for simple implementation — that's Sonnet's job
 4. Never use haiku for planning or architecture — that's Opus's job
-5. Never spawn Atlas for a single-file change — use Junior directly
+5. Never spawn Ceui for a single-file change — use Zansin directly
