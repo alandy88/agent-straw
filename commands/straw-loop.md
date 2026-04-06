@@ -2,6 +2,7 @@
 description: "Start a Straw autonomous loop on a plan file"
 argument-hint: "--plan <file> [--max-iterations N] [--completion-promise TEXT]"
 allowed-tools: ["Bash(${CLAUDE_PLUGIN_ROOT}/scripts/setup-straw-loop.sh:*)"]
+hide-from-slash-command-tool: "true"
 ---
 
 # Straw Loop Command

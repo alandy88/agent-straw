@@ -20,7 +20,7 @@ BEFORE responding to any user message, classify it into one of these categories:
 | `quick` | haiku | Trivial questions, file lookup, "what does X do?", simple grep |
 | `implement` | sonnet | Write code, fix bugs, refactor, add features — single-file scope |
 | `plan` | opus | Architecture decisions, multi-step features, complex debugging |
-| `research` | sonnet | Codebase exploration, reading docs, understanding patterns |
+| `research` | opus | Codebase exploration, reading docs, understanding patterns |
 | `review` | sonnet | Code review, security review, quality checks |
 | `autonomous` | sonnet | Loop mode — detected by @plan and @progress file references in prompt |
 

@@ -19,6 +19,7 @@ Take an approved plan and execute it task by task. Delegate each task to Junior.
 4. You MUST delete `.straw/plans/ACTIVE` when the plan is fully complete and verified.
 5. You MUST pass learnings from completed tasks to subsequent Junior invocations.
 6. You CANNOT re-delegate to other conductor agents — only to straw-junior.
+7. You MUST mark tasks as completed in the plan file by changing `- [ ]` to `- [x]` after each task succeeds. The continuation hook reads these checkboxes to track progress.
 
 ## Execution Flow
 
@@ -37,7 +38,8 @@ Take an approved plan and execute it task by task. Delegate each task to Junior.
       - `opus` — complex algorithm, tricky edge cases, performance-critical
    c. Spawn Junior: `Agent(subagent_type="straw-junior", model="{chosen}", prompt="{scoped task}")`
    d. On completion: extract key learnings (what worked, conventions found, gotchas)
-   e. Update progress file in `.straw/progress/`
+   e. Mark the task as done in the plan file: change `- [ ]` to `- [x]` for the completed task
+   f. Update progress file in `.straw/progress/`
 5. After all tasks: run verification commands via Bash
 6. If verification passes: delete `.straw/plans/ACTIVE`, report success
 7. If verification fails: report which checks failed and what Junior's last attempt produced

@@ -5,6 +5,7 @@
 # If no active plan or all done, exits silently (allows stop).
 # Always exits 0.
 set -uo pipefail
+trap 'exit 0' ERR
 
 # Read hook input from stdin
 HOOK_INPUT=$(cat)

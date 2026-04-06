@@ -4,6 +4,7 @@
 # Reads tool result JSON from stdin, appends summary to temp file.
 # Always exits 0 — never blocks.
 set -uo pipefail
+trap 'exit 0' ERR
 
 # Read tool result JSON from stdin
 input=$(cat)
@@ -26,8 +27,8 @@ fi
 # Take last 200 chars as summary (agent results are already concise)
 summary=$(echo "$tool_output" | tail -c 200 | tr '\n' ' ')
 
-# Session ID: use CLAUDE_CODE_SESSION_ID if available, fall back to parent PID
-session_id="${CLAUDE_CODE_SESSION_ID:-$$}"
+# Session ID: use CLAUDE_CODE_SESSION_ID if available
+session_id="${CLAUDE_CODE_SESSION_ID:-unknown}"
 wisdom_file="${TMPDIR:-/tmp}/straw-wisdom-${session_id}.txt"
 
 # Append timestamped entry
