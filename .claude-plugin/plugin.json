@@ -1,0 +1,9 @@
+{
+  "name": "agent-straw",
+  "version": "0.1.0",
+  "description": "Orchestrator agent with intent classification, model routing, six-agent hierarchy, and Ralph Loop autonomous execution for Claude Code.",
+  "author": {
+    "name": "Peter Yu"
+  },
+  "license": "MIT"
+}
