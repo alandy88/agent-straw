@@ -1,0 +1,29 @@
+{
+  "description": "Straw orchestrator hooks: wisdom capture after sub-agent calls, continuation enforcement on stop",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/straw-wisdom.sh\"",
+            "timeout": 5
+          }
+        ],
+        "description": "Capture sub-agent learnings to session-scoped wisdom file"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/straw-continuation.sh\""
+          }
+        ],
+        "description": "Block exit when active Straw plan has incomplete tasks"
+      }
+    ]
+  }
+}
